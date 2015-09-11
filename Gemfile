@@ -12,7 +12,5 @@ end
 group :production do
 	gem 'pg'	
 end
-gem "sqlite3"
-gem "pg"
 gem "rake"
 
