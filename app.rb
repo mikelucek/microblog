@@ -1,7 +1,8 @@
 require "sinatra"
 require "sinatra/activerecord"
 
-set :database, "sqlite3:test.sqlite3"
+configure (:development){set :database, "sqlite3:test.sqlite3"}
+
 set :sessions, true
 require "./models"
 ###########################################################
