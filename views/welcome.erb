@@ -1,0 +1,10 @@
+
+	
+Welcome <%=session[:user_name] %>
+Create a post:
+
+<form method="POST" action="/create-post">
+	<textarea placeholder="your post" name="post"></textarea>
+	<input type="submit" name="submit" value="post it!">
+</form>
+
