@@ -1,6 +1,6 @@
 
 	
-Welcome <%=session[:user_name] %>
+Welcome <%= @current_user.name %>
 Create a post:
 
 <form method="POST" action="/create-post">
@@ -8,3 +8,10 @@ Create a post:
 	<input type="submit" name="submit" value="post it!">
 </form>
 
+<ul>
+<% @posts = User.find(current_user.id).posts.reverse_order
+@result = ""
+	@posts.each do |x|
+	%><li><%= x.post %></li><%
+ 	end %>
+</ul>

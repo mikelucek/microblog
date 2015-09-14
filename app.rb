@@ -20,6 +20,19 @@ def user_name
 	end
 end
 
+# Let's give up on this for now and just do it in views
+# def show_posts(id)
+# 	@posts = User.find(id).posts.reverse_order
+# 	@result = ""
+# 	 #how in the world do we build html in a string here?
+# 	@posts.each do |x|
+# 		@result = @result + x.post
+# 	end
+# 	@result = "<i>" + @result + "</i>"
+# 	@result
+# end
+
+
 #############################################################
 
 get '/' do
@@ -47,7 +60,7 @@ post "/process-signin" do
 	@u = User.where(name: params[:name]).first
 	if @u.password == params[:password]
 		session[:user_id] = @u.id
-		current user
+		current_user
 		redirect "/posts"
 	else
 		redirect '/signin'
@@ -68,8 +81,8 @@ end
 #
 # current_user
 get "/posts" do
-	if !currentuser.nil?
-		erb :welcome
+	if !current_user.nil?
+		erb :posts
 	else
 		erb :signin
 	end
@@ -78,9 +91,11 @@ get "/posts" do
 	### if it is set, welcome them by name
 end
 
-post "/create-posts" do
-	if !currentuser.nil?
-		#make 'em if you got 'em!
+post "/create-post" do
+	if !current_user.nil?
+		Post.create(post: params[:post], user_id: @current_user.id)
+		##flash here to indicate success.
+		erb :posts
 	else
 		erb :signin
 	end
