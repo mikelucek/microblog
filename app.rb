@@ -88,7 +88,8 @@ post '/process-signup' do
 	@email = params[:email]
 	@password = params[:password]
 	@u = User.create(name: @name, email: @email, password: @password)
-	session[:id] = @u.id
+	session[:user_id] = @u.id
+	current_user
 	redirect "/posts"
 end
 
@@ -121,14 +122,21 @@ get "/profile" do
 end
 
 post "/process-edit" do
-	puts "*****************"
-	puts "PROCESS EDIT"
-	puts session[:user_id]
 	@u = User.where(id: session[:user_id]).first
 	@u.update(name: params[:name], email: params[:email], password: params[:password])
 	current_user
 	redirect "/posts"
 end
+
+get "/delete" do
+	@u = User.where(id: session[:user_id]).first
+	@u.destroy
+	session[:user_id] = nil
+	current_user
+	redirect "/"
+end
+
+
 
 
 #
