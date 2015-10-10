@@ -50,12 +50,26 @@ end
 #build <ul> of posts
 def show_posts(id)
 	@posts = User.find(id).posts.reverse_order
+	@name = User.find(id).name.upcase
 	@result = "<ul>"
+	@result = @result + "posts from " + @name
 	@posts.each do |x|
 		@result = @result + "<li>" + x.post + "</li>"
 	end
 	@result = @result + "</ul>"
 	@result
+end
+
+def show_my_posts_and_followeds_posts
+	if !current_user.nil?
+			 @r = show_posts(@current_user.id)
+			@current_user.friends.each do |x|
+				@r = @r + show_posts(x.id)
+			end
+			@r
+		else
+			redirect "/signin"
+		end
 end
 
 
@@ -73,9 +87,9 @@ post '/process-signup' do
 	@name = params[:name]
 	@email = params[:email]
 	@password = params[:password]
-	User.create(name: @name, email: @email, password: @password)
-	redirect "/signin"
-	
+	@u = User.create(name: @name, email: @email, password: @password)
+	session[:id] = @u.id
+	redirect "/posts"
 end
 
 get '/signin' do

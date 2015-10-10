@@ -2,13 +2,38 @@
 <head>
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="script.js"></script>
 </head>
 <body>
 	<div id = "page">
+		<div id = "nav">
+			<ul>
+				<div id = "logged-in">
+					<li>
+						<a href="##">option1</a>
+					</li>
+					<li>
+						<a href="###">option1</a>
+					</li>
+				</div>
+				<div id = "logged-out">
+					<li>
+						logged out
+					</li>
+				</div>
+		</div>
+
 		<div id = "content">
 			<%= yield %>
 		</div>
 	</div>
+	<% if !current_user.nil? %>
+			<script> loggedIn() </script>
+		<% else %>
+			fired loggedout
+			<script> loggedout(); </script>
+		<% end %> 
 
 </body>
 </html>
