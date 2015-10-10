@@ -96,6 +96,11 @@ get '/signin' do
 	erb :signin
 end
 
+get '/signout' do
+	session[:user_id] = nil
+	redirect '/'
+end
+
 post "/process-signin" do
 	@u = User.where(name: params[:name]).first
 	if @u.password == params[:password]
@@ -107,6 +112,23 @@ post "/process-signin" do
 	end
 end
 
+get "/profile" do
+	if !current_user.nil?
+		erb :profile
+	else
+		"/signin"
+	end
+end
+
+post "/process-edit" do
+	puts "*****************"
+	puts "PROCESS EDIT"
+	puts session[:user_id]
+	@u = User.where(id: session[:user_id]).first
+	@u.update(name: params[:name], email: params[:email], password: params[:password])
+	current_user
+	redirect "/posts"
+end
 
 
 #

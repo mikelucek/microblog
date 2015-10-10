@@ -11,15 +11,24 @@
 			<ul>
 				<div id = "logged-in">
 					<li>
-						<a href="##">option1</a>
+						<a href="/posts">home</a>
 					</li>
 					<li>
-						<a href="###">option1</a>
+						<a href="/show-users">friends</a>
+					</li>
+					<li>
+						<a href="/profile">profile</a>
+					</li>
+					<li>
+						<a href="/signout">logout</a>
 					</li>
 				</div>
 				<div id = "logged-out">
 					<li>
-						logged out
+						<a href="/signin">login</a>
+					</li>
+					<li>
+						<a href="/signup">register</a>
 					</li>
 				</div>
 		</div>
@@ -31,8 +40,7 @@
 	<% if !current_user.nil? %>
 			<script> loggedIn() </script>
 		<% else %>
-			fired loggedout
-			<script> loggedout(); </script>
+			<script> loggedOut(); </script>
 		<% end %> 
 
 </body>
