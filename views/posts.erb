@@ -9,9 +9,5 @@ Create a post:
 </form>
 
 <ul>
-<% @posts = User.find(current_user.id).posts.reverse_order
-@result = ""
-	@posts.each do |x|
-	%><li><%= x.post %></li><%
- 	end %>
-</ul>
+
+<%= show_posts(@current_user.id) %>

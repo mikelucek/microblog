@@ -20,17 +20,43 @@ def user_name
 	end
 end
 
-# Let's give up on this for now and just do it in views
-# def show_posts(id)
-# 	@posts = User.find(id).posts.reverse_order
-# 	@result = ""
-# 	 #how in the world do we build html in a string here?
-# 	@posts.each do |x|
-# 		@result = @result + x.post
-# 	end
-# 	@result = "<i>" + @result + "</i>"
-# 	@result
-# end
+def show_users
+	if !current_user.nil?
+		#let's build a list of all current friends, in order to unfollow.
+		#then let's build a lits of all users EXCEPT current friends, in order to follow
+		@all_users = User.all
+		@friends = @current_user.friends.all
+		@unfollowed_users = @all_users - @friends
+		puts "**********I*AM"
+		puts @current_user.name
+		puts "****************************FRIENDS"
+		puts @friends
+		puts "**********UNFOLLOWEDS"
+		puts @unfollowed_users
+		@result = "<ul>"
+		@unfollowed_users.each do |x|
+			@result = @result + "<li>" + x.name + " " + "<a href = 'follow/" + x.id.to_s + "''>follow</a></li>"
+		end
+		@friends.each do |x|
+			@result = @result + "<li>" + x.name + " " + "<a href = 'unfollow/" + x.id.to_s + "''>unfollow</a></li>"
+		end
+	@result = @result + "</ul>"
+	@result
+	else
+		redirect "/signin"
+	end
+end
+
+#build <ul> of posts
+def show_posts(id)
+	@posts = User.find(id).posts.reverse_order
+	@result = "<ul>"
+	@posts.each do |x|
+		@result = @result + "<li>" + x.post + "</li>"
+	end
+	@result = @result + "</ul>"
+	@result
+end
 
 
 #############################################################
@@ -67,10 +93,6 @@ post "/process-signin" do
 	end
 end
 
-get '/showusers' do
-	@users = User.all
-	erb :showusers
-end
 
 
 #
@@ -100,6 +122,36 @@ post "/create-post" do
 		erb :signin
 	end
 end
+
+get "/show-users" do
+	if !current_user.nil?
+		erb :showusers
+	else
+		erb :signin
+	end
+end
+
+get "/follow/:id" do
+	if !current_user.nil?
+		Friendship.create(user_id: @current_user.id, friend_id: params[:id])
+		redirect "/show-users"
+	else
+		redirect "/signin"
+	end
+		
+end
+
+get "/unfollow/:id" do
+	if !current_user.nil?
+		@f = Friendship.where(user_id: @current_user.id, friend_id: params[:id]).first
+		@f.destroy
+		redirect "/show-users"
+	else
+		redirect "/signin"
+	end
+end
+
+
 
 
 
