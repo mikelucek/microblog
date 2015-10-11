@@ -1,7 +1,11 @@
 
 $(document).ready(function(){
 console.log("here I am...")
+$("#post").keyup(function(){
+	var v = 150 - $("#post").val().length;
+	$("#char").text(v + " chars left")
 
+});
 
 });
 
